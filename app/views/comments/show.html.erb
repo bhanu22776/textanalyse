@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Message:</b>
+  <%= @comment.message %>
+</p>
+<p>
+  <b>Probability</b>
+  <%= @comment.probability %>
+</p>
+<p>
+  <b>Sentiment</b>
+  <%= @comment.sentiment %>
+</p>
+<p>
+  <b>Emotion</b>
+  <%= @comment.emotion %>
+</p>
+<p>
+  <b>Polarity</b>
+  <%= @comment.polarity %>
+</p>
+
+
+
+<%= link_to 'Edit', edit_comment_path(@comment) %> |
+<%= link_to 'Back', comments_path %>

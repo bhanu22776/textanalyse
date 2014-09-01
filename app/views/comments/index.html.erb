@@ -1,0 +1,36 @@
+<h1>New comment</h1>
+
+<%= render 'form' %>
+
+<h1>Listing comments</h1>
+
+<table>
+  <tr>
+    <th>Message</th>
+    <th>Probability</th>
+    <th>Sentiment</th>
+    <th>Emotion</th>
+    <th>Polarity</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @comments.each do |comment| %>
+  
+  <tr>
+    <td><%= comment.message %></td>
+    <td><%= comment.probability %></td>
+    <td><%= comment.sentiment %></td>
+    <td><%= comment.emotion %></td>
+    <td><%= comment.polarity %></td>
+    <td><%= link_to 'Show', comment %></td>
+    <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
+    <td><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Comment', new_comment_path %>

@@ -1,36 +1,87 @@
-<h1>New comment</h1>
-
+<style type="text/css">
+    .table-responsive
+{
+    overflow-x: auto;
+}
+</style>
 <%= render 'form' %>
 
-<h1>Listing comments</h1>
 
-<table>
-  <tr>
-    <th>Message</th>
-    <th>Probability</th>
-    <th>Sentiment</th>
-    <th>Emotion</th>
-    <th>Polarity</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+        <div class="table-responsive">
+            <div class="alert alert-info">
+                Please Wait...</div>
+            <div class="alert alert-success" style="display:none;">
+                <span class="glyphicon glyphicon-ok"></span> Drag table row and change Order</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Message</th>
+                        <th>Probability</th>
+                        <th>Sentiment</th>
+                        <th>Emotion</th>
+                        <th>Polarity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @comments.each do |comment| %>
+                        <tr>
+                            <td><%= comment.message %></td>
+                            <td><%= comment.probability.to_f.round(2) %></td>
+                            <td><%= comment.sentiment %></td>
+                            <td><%= comment.emotion %></td>
+                            <td><%= comment.polarity.to_f.round(2) %></td>
+                            <% link_to 'Show', comment %>
+                            <% link_to 'Edit', edit_comment_path(comment) %>
+                            <% link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
 
-<% @comments.each do |comment| %>
-  
-  <tr>
-    <td><%= comment.message %></td>
-    <td><%= comment.probability %></td>
-    <td><%= comment.sentiment %></td>
-    <td><%= comment.emotion %></td>
-    <td><%= comment.polarity %></td>
-    <td><%= link_to 'Show', comment %></td>
-    <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
-    <td><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
 
-<br />
+<% link_to 'New Comment', new_comment_path %>
 
-<%= link_to 'New Comment', new_comment_path %>
+<script type="text/javascript">
+    (function ($) {
+        $.fn.extend({
+            tableAddCounter: function (options) {
+
+                // set up default options 
+                var defaults = {
+                    title: '#',
+                    start: 1,
+                    id: false,
+                    cssClass: false
+                };
+
+                // Overwrite default options with user provided
+                var options = $.extend({}, defaults, options);
+
+                return $(this).each(function () {
+                    // Make sure this is a table tag
+                    if ($(this).is('table')) {
+
+                        // Add column title unless set to 'false'
+                        if (!options.title) options.title = '';
+                        $('th:first-child, thead td:first-child', this).each(function () {
+                            var tagName = $(this).prop('tagName');
+                            $(this).before('<' + tagName + ' rowspan="' + $('thead tr').length + '" class="' + options.cssClass + '" id="' + options.id + '">' + options.title + '</' + tagName + '>');
+                        });
+
+                        // Add counter starting counter from 'start'
+                        $('tbody td:first-child', this).each(function (i) {
+                            $(this).before('<td>' + (options.start + i) + '</td>');
+                        });
+
+                    }
+                });
+            }
+        });
+    })(jQuery);
+
+    $(document).ready(function () {
+        $('.table').tableAddCounter();
+        $.getScript("http://code.jquery.com/ui/1.9.2/jquery-ui.js").done(function (script, textStatus) { $('tbody').sortable();$(".alert-info").alert('close');$(".alert-success").show(); });
+    });
+</script>
